@@ -3,7 +3,6 @@ package com.lab.ytour.tour;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -17,26 +16,36 @@ public class TourController {
         this.tourService = tourService;
     }
 
+    @CrossOrigin
     @GetMapping
     public List<Tour> getTours() {
-     return tourService.getTours();
+        return tourService.getTours();
     }
+
+    @CrossOrigin
     @PostMapping
-    public void addNewTour (@RequestBody Tour tour) {
+    public void addNewTour(@RequestBody Tour tour) {
         tourService.addNewTour(tour);
     }
+
+    @CrossOrigin
     @DeleteMapping(path = "{tourId}")
     public void deleteTour(@PathVariable("tourId") Long tourId) {
         tourService.deleteTour(tourId);
     }
-    @PutMapping (path = "{tourId}")
-    public void updateTour(
-            @PathVariable("tourId") Long tourId,
-            @PathVariable(required = false) String description,
-            @PathVariable(required = false) String country,
-            @PathVariable(required = false) Integer price,
-            @PathVariable(required = false) String image) {
-        tourService.updateTour(tourId, description, country, price, image);
+
+
+    @CrossOrigin
+    @PutMapping("/update/{id}")
+    private void updateTour(@PathVariable("id") Long id, @RequestBody Tour tour) {
+        tourService.updateTour(id, tour);
     }
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    private Tour getOne(@PathVariable("id") Long id) {
+        return tourService.getOne(id);
+    }
+
 
 }

@@ -12,7 +12,7 @@ public class TourConfig {
     @Bean
     CommandLineRunner commandLineRunner(TourRepository repository) {
         return args -> {
-            Tour carpaty = new Tour(
+            Tour karpaty1 = new Tour(
                     "Amazing Ukraine discover",
                     "Ukraine",
                     150,
@@ -25,7 +25,19 @@ public class TourConfig {
                     50,
                     "https://www.washingtonpost.com/resizer/Q3gSZn4URJz_lw1lkyPaUhzjPkY=/arc-anglerfish-washpost-prod-washpost/public/DBLLHPDG5AI6TJUYFKHYBDE47M.jpg"
             );
-        repository.saveAll(List.of(carpaty, lviv));
+            Tour koblevo = new Tour(
+                     "Відпочинок в Коблево",
+                     "Україна",
+                     250,
+                     "https://rest.guru.ua/img/middle_89436.jpg"
+            );
+            Tour karpaty2 = new Tour(
+                     "Відпочинок в карпатах з басейном",
+                     "Україна",
+                     100,
+                     "https://ua.elenapuzatko.com/wp-content/uploads/2020/07/karpaty-hotel-pool-8.jpg"
+            );
+        repository.saveAll(List.of(karpaty1, lviv, koblevo, karpaty2));
         };
     }
 }

@@ -1,7 +1,9 @@
 package com.lab.ytour.tour;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -40,24 +42,15 @@ private final TourRepository tourRepository;
     }
 
     @Transactional
-    public void updateTour(Long tourId, String description, String country, Integer price, String image) {
-        Tour tour = tourRepository.findById(tourId).orElseThrow(() -> new IllegalStateException("Tour with id " + tourId + " does not exist"));
+    public void updateTour(Long id, Tour tour) {
+        Tour newTour = tourRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        newTour.setDescription(tour.getDescription());
+        newTour.setCountry(tour.getCountry());
+        newTour.setPrice(tour.getPrice());
+        newTour.setImage(tour.getImage());
+    }
 
-        if (description != null && description.length() > 0 && !Objects.equals(tour.getDescription(), description)) {
-            Optional<Tour> tourOptional = tourRepository.findTourByDescription(tour.getDescription());
-            if (tourOptional.isPresent()) {
-                throw new IllegalStateException("Description taken");
-            }
-            tour.setDescription(description);
-        }
-        if (country != null && country.length() > 0 && !Objects.equals(tour.getCountry(), country)) {
-            tour.setCountry(country);
-        }
-        if (price != null && price > 0 && !Objects.equals(tour.getPrice(), price)) {
-            tour.setPrice(price);
-        }
-        if (image != null && image.length() > 0 && !Objects.equals(tour.getImage(), image)) {
-            tour.setImage(image);
-        }
+    public Tour getOne(Long id) {
+            return tourRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
